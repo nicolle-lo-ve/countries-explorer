@@ -12,7 +12,7 @@ Aplicación web que consume la API pública [restcountries.com v3.1](https://res
 
 ## 🚀 Demo
 
-
+![alt text](image.png)
 ---
 
 ## 📁 Estructura del proyecto

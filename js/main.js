@@ -1,10 +1,9 @@
 /**
- * main.js — Lógica de la interfaz
+ * main.js — Lógica de la interfaz (Adaptado a countries.dev)
  * ---------------------------------------------------------------
  * 1. Rellena el selector de regiones (valores estáticos).
  * 2. Al cambiar la región, obtiene los países de esa región desde
- *    https://restcountries.com/v3.1/region/{region}
- *    usando el parámetro ?fields= para limitar la respuesta.
+ *    https://countries.dev/region/{region}
  * 3. Al cambiar el país, muestra una tabla con los idiomas y el
  *    nombre nativo del país en cada idioma.
  * ---------------------------------------------------------------
@@ -30,16 +29,16 @@ const els = {
    Regiones disponibles (valores que acepta la API)
    ============================================================ */
 const REGIONS = [
-  { value: 'africa', label: 'África' },
-  { value: 'americas', label: 'América' },
-  { value: 'asia', label: 'Asia' },
-  { value: 'europe', label: 'Europa' },
-  { value: 'oceania', label: 'Oceanía' },
-  { value: 'antarctic', label: 'Antártida' },
+  { value: 'Africa', label: 'África' },
+  { value: 'Americas', label: 'América' },
+  { value: 'Asia', label: 'Asia' },
+  { value: 'Europe', label: 'Europa' },
+  { value: 'Oceania', label: 'Oceanía' },
+  { value: 'Antarctic', label: 'Antártida' },
 ];
 
-const API_BASE = 'https://restcountries.com/v3.1';
-// Campos que necesitamos: nombre (incluye nativeName) y languages
+// 👇 CAMBIO CLAVE: Nueva API base y campos a solicitar
+const API_BASE = 'https://countries.dev';
 const FIELDS = 'name,languages';
 
 /* ============================================================
@@ -110,6 +109,7 @@ async function loadCountriesByRegion(region) {
   showLoading('Obteniendo países de la región…');
 
   try {
+    // 👇 CAMBIO CLAVE: Nueva URL para countries.dev
     const url = `${API_BASE}/region/${region}?fields=${FIELDS}`;
     const response = await fetch(url);
 
@@ -119,7 +119,7 @@ async function loadCountriesByRegion(region) {
 
     const data = await response.json();
 
-    // La API puede devolver un objeto de error si no hay resultados
+    // La API de countries.dev devuelve un array de países
     if (!Array.isArray(data)) {
       throw new Error('La respuesta de la API no es válida.');
     }
@@ -158,16 +158,14 @@ async function loadCountriesByRegion(region) {
 
 /* ============================================================
    Render de la tabla de idiomas y nombres nativos
+   (Esta función no necesita cambios)
    ============================================================ */
 function renderLanguagesTable(country) {
   const { name, languages } = country;
 
-  // Título de la tabla
   els.tableTitle.textContent = `Idiomas de ${name.common}`;
 
-  // Construir filas
   const fragment = document.createDocumentFragment();
-
   const languageEntries = languages ? Object.entries(languages) : [];
 
   if (languageEntries.length === 0) {
@@ -183,11 +181,9 @@ function renderLanguagesTable(country) {
     languageEntries.forEach(([code, languageName]) => {
       const tr = document.createElement('tr');
 
-      // Columna: nombre del idioma
       const tdLanguage = document.createElement('td');
       tdLanguage.textContent = languageName;
 
-      // Columna: nombre nativo (buscamos en name.nativeName por código de idioma)
       const tdNative = document.createElement('td');
       const nativeName = name.nativeName?.[code]?.common;
       tdNative.textContent = nativeName || '—';
@@ -202,12 +198,11 @@ function renderLanguagesTable(country) {
 }
 
 /* ============================================================
-   Eventos
+   Eventos (sin cambios)
    ============================================================ */
 els.regionSelect.addEventListener('change', (event) => {
   const region = event.target.value;
   if (!region) {
-    // Si se deselecciona la región, limpiamos todo
     els.countrySelect.replaceChildren();
     const placeholder = document.createElement('option');
     placeholder.value = '';
