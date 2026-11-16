@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explorador de países · REST Countries</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🌍 Explorador de países</h1>
+    <p>Selecciona una región y un país para ver sus idiomas y nombres nativos.</p>
+  </header>
+
+  <main>
+    <!-- Controles -->
+    <section class="controls">
+      <div class="control-group">
+        <label for="regionSelect">Región</label>
+        <select id="regionSelect" disabled>
+          <option value="">Cargando regiones…</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="countrySelect">País</label>
+        <select id="countrySelect" disabled>
+          <option value="">Primero selecciona una región</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Mensajes de estado -->
+    <section class="status" id="status" hidden>
+      <div class="spinner" id="spinner"></div>
+      <p id="statusText">Cargando…</p>
+    </section>
+
+    <!-- Tabla de resultados -->
+    <section class="table-wrapper" id="tableWrapper" hidden>
+      <h2 id="tableTitle"></h2>
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th scope="col">Idioma</th>
+            <th scope="col">Nombre nativo</th>
+          </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>Datos obtenidos de <a href="https://restcountries.com" target="_blank" rel="noopener">restcountries.com</a> · Ejemplo educativo</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
